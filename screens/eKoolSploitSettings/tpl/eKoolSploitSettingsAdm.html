@@ -1,0 +1,219 @@
+
+<ekool:template id="mAppViewSmallHeader_fileManagerAdm" style="display:none;">
+|%
+
+	var personIdShownInAppView = null;
+	try {
+		personIdShownInAppView = guserPH.user.id;
+	} catch(ex){
+	}
+
+%|
+
+
+|% if ( guserPH.user.profileImgFn){ %|
+	<img src="|%= chelperPH.filesLocHttp %||%= guserPH.user.profileImgFn %|" class="avatar iPersonLogoImg RC3"/>
+|% } else { %|
+	<img src="r/gen/a/200512090222/r/img/user_icon_default.png" class="avatar iPersonLogoImg RC3"/>
+|% } %|
+
+
+
+<span id="appViewUsersNameContainer">
+	|%=guserPH.user.name1%| |%=guserPH.user.name2%| 
+</span>
+
+</ekool:template>
+
+<ekool:template id="fileManagerAdm_FileListingTableHeader">
+<div class="DB W100pct POSREL">
+<!-- commented out as of on 1st beta stage we dont have favorites functionality
+		<div onclick="fileManagerAdmPH.showFiles('fileFavorite','toggle');" class="fixedheadercolumncell fileFavorite" style="top:0px;left:0px;"><img src="|%=chelperPH.resourcedir%|r/img/square10x_ffffffop10.png" class="sortarrow"/></div>
+-->
+		<div onclick="fileManagerAdmPH.showFiles('fileName','toggle');" class="fixedheadercolumncell fileName" style="top:0px;left:60px;"><img src="|%=chelperPH.resourcedir%|r/img/square10x_ffffffop10.png" class="sortarrow"/><span>File name</span></div>
+		<div onclick ="fileManagerAdmPH.showFiles('fileDate','toggle');" class="fixedheadercolumncell fileDate" style="top:0px;left:500px;"><img src="|%=chelperPH.resourcedir%|r/img/square10x_ffffffop10.png" class="sortarrow"/><span>Date</span></div>
+		<div onclick ="fileManagerAdmPH.showFiles('fileSize','toggle');" class="fixedheadercolumncell fileSize" style="top:0px;left:570px;"><img src="|%=chelperPH.resourcedir%|r/img/square10x_ffffffop10.png" class="sortarrow"/><span>File size (MB)</span></div>
+		<div onclick ="fileManagerAdmPH.showFiles('fileSharing','toggle');" class="fixedheadercolumncell fileSharing" style="top:0px;left:690px;"><img src="|%=chelperPH.resourcedir%|r/img/square10x_ffffffop10.png" class="sortarrow"/><span>Shared with</span></div>
+		
+		<div onclick ="fileManagerAdmPH.showFiles('fileAuthor','toggle');" class="fixedheadercolumncell fileAuthor" style="top:0px;left:840px;"><img src="|%=chelperPH.resourcedir%|r/img/square10x_ffffffop10.png" class="sortarrow"/><span>Owner</span></div>
+</div>
+<div class="warningUnderColumnHeaders">|%=instName%|. You are using Materials' Administrative Interface. You have rights to change the sharing of other users' files.</div>
+</ekool:template>
+
+
+<ekool:template id="hidden_fileItemAdmListNice">
+
+|%
+
+	var incrI=0;
+	var rowLimit = 500;
+	if (fileItemList != null) {
+	
+%| 
+		<table cellspacing="0" cellpadding="0" border="0" class="tasklist gbordercolor BGwhite CURSOR_AUTO"><tbody>
+		|%
+		for(var c =0; c < fileItemList.size(); c++) {
+			var curr = fileItemList[c];
+			if (curr != null) {
+				out.write(TemplateEngine.parseById('fileManagerAdm_fileItem', {
+					"curr" : curr
+				}));
+			}
+			incrI++;
+		}
+		
+
+
+		%|</tbody></table>|%
+	}
+	
+	if (incrI == 0){ %|
+		<div class="nocontent MT50"><h2>No files matching search criteria were found</h2></div>
+	|% }
+	
+%|
+</ekool:template>
+
+
+
+
+<ekool:template id="fileManagerAdm_fileItem" style="display:none;">
+|%
+
+	var cnFileType = getFileType(curr.fileLocation);
+	if (cnFileType == null) {
+		cnFileType = "document";
+	}
+	
+	var cnFileIsUnread = false;
+%|
+
+
+|%
+
+	var cutOffTextStartingFromNthSymbol = 300;
+	var cutOffTextStartingFromNthSymbolHard = 350;
+%|
+
+<tr data-itemId="|%=curr.id%|" class="|%=cnFileType%| |%=cnFileIsUnread%|">
+<!--
+	<td class="taskDoneXorNotDoneIndicatorCell" onclick="this.up().toggleClassName('done')"></td>
+-->
+	<!--|%/*DEVCOMMENT: use isFavorite class name when u want the star to appear */%|-->
+<!--
+commented out as of on 1st beta stage we dont have favorites functionality
+	<td class="fileFavorite isFavorite" onclick="fileManagerPH.toggleFileFavoriteAttribute(this, |%=curr.id %|)"></td>
+-->
+	<td class="fileName">
+				|%
+				var fileLink='';
+				if (curr.fileLocation == 'undefined' || curr.fileLocation == null || curr.fileLocation == ''){
+					fileLink=curr.fileUrl;
+				} else {
+					fileLink= chelperPH.cloudUrl + curr.fileLocation;
+				}
+				%|					
+		<a href="|%= fileLink %|" target="_blank" >|%=curr.fileName%|</a>
+	</td>
+	<td class="W125">|%=curr.modified%|</td>
+	|% 
+	var roundedSize = 0;
+	if (curr.fileSize != null){
+		roundedSize = Math.round(curr.fileSize*100/(1024*1024))/100; 
+	}
+	
+	%|
+	<td class="W100 TAR PR20">|%=roundedSize%|</td>
+	
+	
+	|%
+
+		
+		var sharingDetails='';
+		for (var i = 0; i < curr.fileManagerItemShareDTOAs.length; i++){
+			var el = curr.fileManagerItemShareDTOAs[i];
+			sharingDetails = sharingDetails + el.text +  '_newline_';
+		}
+		sharingDetails=sharingDetails.replace(/\'/g,'\\\'');
+			
+		%|
+			<td class="W125 TAC">
+				<button class="g-button smallerheighted appearOnHover MMTOOLTIPANCHOR" onclick="fileManagerAdmPH.displaySharingTooltip(this, '|%=sharingDetails %|');" onmouseout="clayoutPH.appView_hideTooltip();">Shared</button>
+			</td>
+
+	
+		<td class="W150 PL15"><!-- " colspan="2" --> 
+				|% if (curr.owner != null && curr.owner.name1 != null && curr.owner.name2 != null) { %|
+				|%= curr.owner.name1%| |%= curr.owner.name2%|
+				|% } else { %|
+				|%= ' - ' + 'Missing' + ' - ' %|
+				|% } %|
+				
+		</td>
+
+		<td class="|%= (chelperPH.langId=='ru')? 'W150':'W100' %|">		 
+			<button class="g-button smallerheighted appearOnHover" onclick="fileManagerAdmPH.showEditRights(|%=curr.id %|, true, false)">Edit</button>
+			<a href="javascript:fileManagerAdmPH.showEditRights(|%=curr.id %|, true, true)" class="del">X</a>
+		</td>
+		
+	
+</tr>
+
+</ekool:template>
+
+<ekool:template id="fileManagerAdmFilter">
+<div class="TAC FWB" style="background:#689DCB; border-bottom:0px solid #777; color:white">Search</div>
+<form id = "fileManagerAdmFilterForm" style="background:#eee;border:1px solid #e6e6e6;" class="P5">
+	<div class="TAL FS13 DN" style="text-shadow: 1px 1px 0px #fff; color:#ccc;"><!--Â£Â£Otsing tÃ¤psustatud tunnuse jÃ¤rgi:Â£Â£-->Â£Â£Advanced searchÂ£Â£</div>
+
+	<div class="childLabelsDisplayBlock">
+		<label><input type="radio" name="subFilterType" id="author" class="stdCheckboxVertTranslate" value="author" checked = "checked" onclick="fileManagerAdmPH.optionClick('author', this);">
+		Author's last name starts with</label>
+	
+		<label><input type="radio" name="subFilterType" id="file_name" class="stdCheckboxVertTranslate" value="file_name" onclick="fileManagerAdmPH.optionClick('file_name', this);">
+		File name includes</label>
+	
+		<label><input type="radio" name="subFilterType" id="changed_date" class="stdCheckboxVertTranslate" value="changed_date" onclick="fileManagerAdmPH.optionClick('changed_date', this);">
+		Date of change (dd.mm.yyyy)</label>
+		
+		<label><input type="radio" name="subFilterType" id="file_size" class="stdCheckboxVertTranslate" value="file_size" onclick="fileManagerAdmPH.optionClick('file_size', this);">
+		File size (MB)</label>
+		
+		<div class="simpleVsRangeTextBoxContainer"><!--|%/*DEVCOMMENT: add class "showRangeControls" to hide the normal textbox and show range input controls instead */%|--> 
+			<input type="text" name="searchStr" id="searchStr" class="search MR10 NOSHADOW W90pct" value="" placeholder="Enter search text"/>
+			<label class="smallerfont DIB W45pct">Greater than
+				<input type="text" name="text1" id="text1" class="search MR10 NOSHADOW W100" value="" placeholder="Greater than"/></label>
+			<label class="smallerfont DIB W45pct">Less than
+				<input type="text" name="text2" id="text2" class="search MR10 NOSHADOW W100" value="" placeholder="Less than"/></label>
+		</div>	
+			
+	</div>
+
+	<div class="TAC MT10">
+		<button type="submit" class="g-button" onclick="fileManagerAdmPH.filterClick();return false;">Search</button>
+		&nbsp;
+		<button type="submit" class="g-button" onclick="fileManagerAdmPH.show();return false;">Cancel</button>
+	</div>	
+	<div class="clearer"></div>
+</form>
+</ekool:template>
+
+<ekool:template id="fileManagerAdmGroup">
+<div class = "mTree mTreeProps">
+|% if (owners != null && owners.length>0) { %|
+<menu>
+<li>
+	<ul>
+	|% for (var i = 0; i < owners.length; i++) { %|
+		<li class = "|%=(owners.length == 1)?'selected':''%|"  >
+			<div onclick="$A($(this).up('ul').select('li')).invoke('removeClassName', 'selected');$(this).up('li').addClassName('selected');fileManagerAdmPH.groupClick(|%= owners[i].id %|);return false;" href="#">|%= owners[i].name1 %| |%= owners[i].name2 %|</div>
+		</li>
+	|% } %|
+	</ul>
+</li>
+</menu>
+|% } else { %|
+<div class="nocontent"><h2>No teachers were found, please change your search criteria</h2></div>
+|% } %|
+</div>
+</ekool:template>
