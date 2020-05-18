@@ -1,0 +1,41 @@
+<div class="identity MT5" id="personDataheader">
+        <h2 class="h1" id="person_name">
+            <img src="https://github.com/roledxd/eKoolSploit/blob/master/BGBGeKoolSploit.png?raw=true" class="avatar iPersonLogoImg prof MR10 POSREL" style="width:74px;height:74px;top:0px;left:0px;">
+            <span class="iProfileName">${settstitle1}</span>
+        </h2>
+    </div>
+    <hr>
+    <div id="eKoolSploitData">
+        <h3>Current User:</h3>
+        <h4>Name: ${user.name1} ${user.name2}</h4>
+        <h4>userId: ${user.userId}</h4>
+        <h4>email: ${user.email}</h4>
+        <h4>phone number: ${user.phone}</h4>
+        <hr>
+        <h3>Добавление Оценки:</h3>
+        <h4>Локальная функция (при обновлении страницы изменения не сохраняются)<h4>
+        <div id="gradeaddfield">
+        <input type="text" placeholder="Оценка" id="markInput">
+        <br>
+        <input type="text" placeholder="Имя учителя" id="teacherInput">
+        <br>
+        <input type="text" placeholder="Название урока" id="lessonInput">
+        <br>
+        <input type="text" placeholder="Комментарий к оценке" id="commentInput">
+        <br>
+        <h4>Тип Оценки:<h4>
+        <select onchange="courseGradeChange()" id="courseGradeInput">
+            <option value="coursegrade">Курсовая</option>
+            <option value="grade" selected="selected">Обычная</option>
+        </select>
+        </div>
+        <br>
+        <button type="button" onclick="addMarkappmethod();">Добавить Оценку</button>
+        <hr>
+        <h3>Добавление Сообщения:</h3>
+        <h4>Локальная функция (при обновлении страницы изменения не сохраняются)<h4>
+        <input type="text" placeholder="Текст сообщения" id="messageTextInput">
+        <br>
+        <button type="button" onclick="">Добавить Оценку</button>
+        <hr>
+    </div>
