@@ -1,4 +1,3 @@
-//eKSCore Script
 var eKSCore = {
     isLoggedIn: function() {
         if(guserPH.user != null) return true;
