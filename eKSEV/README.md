@@ -3,10 +3,11 @@
 ##### Functions Available:
   - Employee viewing
   - More info about employees
-##### Comming soon:
+##### TODO:
   - 'Group Data' Tab
   - 'Other' Tab
   - Auto seting language as it set on eKool
+  - Improved group search
 
 ### Usage
   1. Open ekool.eu and sign-in.
