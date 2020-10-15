@@ -3,8 +3,8 @@
 ##### Functions Available:
   - Employee viewing
   - More info about employees
+  - Print GroupObject or UserProfileObject to console ability
 ##### TODO:
-  - 'Group Data' Tab
   - 'Other' Tab
   - Auto seting language as it set on eKool
   - Improved group search
