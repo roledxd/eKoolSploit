@@ -1,5 +1,7 @@
 # eKSEV | eKoolSploit Module
-
+##### New (11/17/2020):
+  - Improved by groupId load (does not give any errors anymore)
+  - "Load current group" (Get latest group you have visited in ekool [ONLY THIS SESSION] )
 ##### Functions Available:
   - Employee viewing
   - More info about employees
