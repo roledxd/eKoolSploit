@@ -1,6 +1,6 @@
 //status
 var enabled = true
-//course id
+//curriculum id
 var courseId = 250114398
 
 setInterval(function(){ dwr.engine._scriptSessionId=Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); }, 500);
