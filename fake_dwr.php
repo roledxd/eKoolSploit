@@ -47,6 +47,11 @@
         if(!isset($message)){
             $message = "Error";
         }
+        if(isset($r['batchId'])){
+            $bid = $r['batchId'];
+        }else{
+            $bid = 0;
+        }
         exit("//#DWR-Remote made by github.com/roledxd\r\n"
         ."//#DWR-INSERT\r\n"
         ."//#DWR-REPLY\r\n"
@@ -54,7 +59,7 @@
         ."(function(){\r\n"
         ."if(!window.dwr)return;\r\n"
         ."var dwr=window.dwr._[0];\r\n"
-        ."dwr.engine.remote.handleException('0','0',{javaClassName:'java.lang.Throwable',message:'".$message."'});\r\n"
+        ."dwr.engine.remote.handleException('".$bid."','0',{javaClassName:'java.lang.Throwable',message:'".$message."'});\r\n"
         ."})();\r\n"
         ."//#DWR-END#\r\n");
     }
