@@ -1,3 +1,4 @@
+PLUMBR = null
 var u = guserPH.user;
 var allroles = [1, 2, 3, 4, 5, 6, 7, 10, 11, 20, 21, 22, 23];
 var srr = new ee.ekool.model.roles.Staff;
