@@ -26,6 +26,15 @@ gmainv2PH.getMenuItemsPermissions = function() {
     gmainv2PH.permissions = a;
     return a;
 }
+peopleResourceManager.getAllActiveEmployeesByInstitutionId(gmainv2PH.groupId, {
+    callback: function (a) {
+        a.forEach(emp => {
+            fileManagerPH.teacherRoles.push(emp);
+        });
+    }
+});
+fileManagerPH.hasWriteAccessToWp = function(){return true;}
+fileManagerPH.hasReadAccessToWp = function(){return true;}
 //rolesPH.isAdmin = true;
 //rolesPH.accountTypes = allroles;
 /*if(wpRep){
