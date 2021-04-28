@@ -33,6 +33,7 @@ peopleResourceManager.getAllActiveEmployeesByInstitutionId(gmainv2PH.groupId, {
         });
     }
 });
+fileManagerPH.iHaveWritingAccess = function(){return true;}
 fileManagerPH.hasWriteAccessToWp = function(){return true;}
 fileManagerPH.hasReadAccessToWp = function(){return true;}
 //rolesPH.isAdmin = true;
